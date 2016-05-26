@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>OP Jira REST API</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+var wdc;
+
+(function() {
+  var BASE_URL = "https://partners.affecto.com/jira/rest/api/2/search/";
+  var PROJECT = "PATE";
+  
+  function getConnectionUrl(startAt, maxResults) {
+    console.log("2");
+    return BASE_URL + "?jql=project in (" + PROJECT + ")&startAt=" + startAt + "&maxResults=" + maxResults + "&expand=changelog";
+  }
+
+  wdc = function fetchData() {
+  	console.log($);
+    var xhr = $.ajax({
+      type: "GET",
+      url: getConnectionUrl(0, 10),
+      contentType: "application/json; charset=utf-8",
+      dataType: 'jsonp',
+      success: function(response) {
+        console.log(response);
+        //var stockTableRows = $(response).find('#stockTable tr');
+        //stockTableRows = stockTableRows.not(':first'); // Removes the first row which is the header
+
+        var tableData = [];
+        //stockTableRows.each(function (i, row) {
+
+        //  var $stockTableColumnsInRow = $(row).find('td');
+
+          // Build a row from the parsed response
+          tableData.push({
+            'Project':  "1",
+            'Key': 		"2",
+            'Type':    	"3",
+            'Started': 	"04/25",
+            'Ended':    "04/28"
+          });
+        //});
+      },
+      error: function(data) {
+      	console.log(data.responseStatus);
+        console.log(data.responseData);
+      }
+    });
+  }
+})();
+
+$(document).ready(function(){
+  $("#goButton").click(function() { // This event fires when a button is clicked
+    wdc();
+  });
+});
+</script>
+</head>
+<body>
+Get data from Jira REST API
+<br>
+
+<button type="button" id="goButton">Go</button>
+
+</body>
+</html>
